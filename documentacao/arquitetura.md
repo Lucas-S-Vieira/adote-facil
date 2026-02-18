@@ -63,18 +63,19 @@ Isso reduz o acoplamento entre regras de negócio e persistência, facilitando t
 
 ---
 
-## 3. Diagrama de Componentes
+## Diagrama de Componentes
 
 ```mermaid
 graph TD
 
 Frontend --> Routes
-Routes --> Controllers
+Routes --> Middlewares
+Middlewares --> Controllers
 Controllers --> Services
 Services --> Repositories
 Repositories --> Prisma
 Prisma --> PostgreSQL
 
-Controllers --> Middlewares
 Services --> Providers
 Services --> Utils
+
