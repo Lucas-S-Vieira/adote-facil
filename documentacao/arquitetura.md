@@ -137,7 +137,7 @@ flowchart TB
     STYLES[styles/]
     HELPERS[helpers/]
     LIB[lib/]
-    TYPES[@types/]
+    TYPES["src/@types/"]
   end
 
   APPF --> COMP
