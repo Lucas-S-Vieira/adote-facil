@@ -79,3 +79,58 @@ Prisma --> PostgreSQL
 Services --> Providers
 Services --> Utils
 
+flowchart TD
+    %% Agrupamento Geral do Sistema
+    subgraph Sistema_Adote_Facil [Sistema Adote Fácil]
+        direction LR
+        
+        %% Pacote do Frontend
+        subgraph Pkg_Frontend [📦 Pacote Frontend]
+            direction TB
+            F_App[app / Páginas]
+            F_Layout[layout]
+            F_Components[components]
+            F_Contexts[contexts]
+            F_API[api / Client HTTP]
+            
+            F_App --> F_Layout
+            F_App --> F_Components
+            F_App --> F_Contexts
+            F_Components --> F_API
+            F_App --> F_API
+        end
+
+        %% Pacote do Backend
+        subgraph Pkg_Backend [📦 Pacote Backend]
+            direction TB
+            B_Routes[routes.ts]
+            B_Middlewares[middlewares]
+            B_Controllers[controllers]
+            B_Services[services]
+            B_Providers[providers]
+            B_Repositories[repositories]
+            B_Prisma[prisma / ORM]
+            
+            B_Routes --> B_Middlewares
+            B_Middlewares --> B_Controllers
+            B_Controllers --> B_Services
+            B_Services --> B_Providers
+            B_Services --> B_Repositories
+            B_Repositories --> B_Prisma
+        end
+
+        %% Pacote de Infraestrutura/Dados
+        subgraph Pkg_Infra [📦 Infraestrutura]
+            direction TB
+            DB_Postgres[(PostgreSQL)]
+        end
+    end
+
+    %% Comunicação Externa entre os Pacotes Principais
+    F_API ===>|Requisições HTTP| B_Routes
+    B_Prisma ===>|Conexão TCP / SQL| DB_Postgres
+
+    %% Estilização Básica para visualização
+    style Pkg_Frontend fill:#f0f4f8,stroke:#0369a1,stroke-width:2px
+    style Pkg_Backend fill:#f0fdf4,stroke:#15803d,stroke-width:2px
+    style Pkg_Infra fill:#fefce8,stroke:#a16207,stroke-width:2px
