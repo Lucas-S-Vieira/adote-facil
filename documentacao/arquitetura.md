@@ -82,57 +82,45 @@ Services --> Utils
 ### Diagrama de Pacotes
 ```mermaid
 flowchart TD
-    %% Agrupamento Geral do Sistema
-    subgraph Sistema_Adote_Facil [Sistema Adote Fácil]
-        direction LR
+    %% Pacote Frontend simplificado
+    subgraph Frontend [📦 App Frontend / Next.js]
+        direction TB
+        F_Pages[Páginas / App]
+        F_Comp[Componentes]
+        F_API[Integração API]
         
-        %% Pacote do Frontend
-        subgraph Pkg_Frontend [📦 Pacote Frontend]
-            direction TB
-            F_App[app / Páginas]
-            F_Layout[layout]
-            F_Components[components]
-            F_Contexts[contexts]
-            F_API[api / Client HTTP]
-            
-            F_App --> F_Layout
-            F_App --> F_Components
-            F_App --> F_Contexts
-            F_Components --> F_API
-            F_App --> F_API
-        end
-
-        %% Pacote do Backend
-        subgraph Pkg_Backend [📦 Pacote Backend]
-            direction TB
-            B_Routes[routes.ts]
-            B_Middlewares[middlewares]
-            B_Controllers[controllers]
-            B_Services[services]
-            B_Providers[providers]
-            B_Repositories[repositories]
-            B_Prisma[prisma / ORM]
-            
-            B_Routes --> B_Middlewares
-            B_Middlewares --> B_Controllers
-            B_Controllers --> B_Services
-            B_Services --> B_Providers
-            B_Services --> B_Repositories
-            B_Repositories --> B_Prisma
-        end
-
-        %% Pacote de Infraestrutura/Dados
-        subgraph Pkg_Infra [📦 Infraestrutura]
-            direction TB
-            DB_Postgres[(PostgreSQL)]
-        end
+        F_Pages --> F_Comp
+        F_Comp --> F_API
     end
 
-    %% Comunicação Externa entre os Pacotes Principais
-    F_API ===>|Requisições HTTP| B_Routes
-    B_Prisma ===>|Conexão TCP / SQL| DB_Postgres
+    %% Pacote Backend com fluxo linear (estilo que você gostou)
+    subgraph Backend [📦 App Backend / Node.js]
+        direction TB
+        B_Routes[Routes]
+        B_Middlewares[Middlewares]
+        B_Controllers[Controllers]
+        B_Services[Services]
+        B_Repositories[Repositories]
+        
+        B_Routes --> B_Middlewares
+        B_Middlewares --> B_Controllers
+        B_Controllers --> B_Services
+        B_Services --> B_Repositories
+    end
 
-    %% Estilização Básica para visualização
-    style Pkg_Frontend fill:#f0f4f8,stroke:#0369a1,stroke-width:2px
-    style Pkg_Backend fill:#f0fdf4,stroke:#15803d,stroke-width:2px
-    style Pkg_Infra fill:#fefce8,stroke:#a16207,stroke-width:2px
+    %% Pacote de Infra e Integração
+    subgraph Infra [📦 Infraestrutura e Dados]
+        B_Prisma[Prisma ORM]
+        DB_Postgres[(PostgreSQL)]
+        
+        B_Repositories --> B_Prisma
+        B_Prisma --> DB_Postgres
+    end
+
+    %% Ponte entre as aplicações
+    F_API ===>|Requisição HTTP| B_Routes
+
+    %% Estilos limpos
+    style Frontend fill:#f8fafc,stroke:#0369a1,stroke-width:2px
+    style Backend fill:#f0fdf4,stroke:#15803d,stroke-width:2px
+    style Infra fill:#fefce8,stroke:#a16207,stroke-width:2px
