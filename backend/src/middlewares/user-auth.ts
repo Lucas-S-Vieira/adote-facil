@@ -7,7 +7,7 @@ import {
 class UserAuthMiddleware {
   constructor(private readonly authenticator: Authenticator) {}
 
-  authenticate(req: Request, res: Response, next: NextFunction) {
+  authenticate = (req: Request, res: Response, next: NextFunction) => {
     const authHeader = req.headers.authorization
 
     if (!authHeader) {

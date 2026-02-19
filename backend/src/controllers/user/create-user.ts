@@ -7,7 +7,7 @@ import {
 class CreateUserController {
   constructor(private readonly createUser: CreateUserService) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  handle = async (request: Request, response: Response): Promise<Response> => {
     const { name, email, password } = request.body
 
     try {

@@ -7,7 +7,7 @@ import {
 class UserLoginController {
   constructor(private readonly userLogin: UserLoginService) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  handle = async (request: Request, response: Response): Promise<Response> => {
     const { email, password } = request.body
 
     try {

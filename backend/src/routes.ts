@@ -17,77 +17,67 @@ const router = Router()
 
 router.post(
   '/users',
-  createUserControllerInstance.handle.bind(createUserControllerInstance),
+  createUserControllerInstance.handle,
 )
 
 router.patch(
   '/users',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  updateUserControllerInstance.handle.bind(updateUserControllerInstance),
+  userAuthMiddlewareInstance.authenticate,
+  updateUserControllerInstance.handle,
 )
 
 router.post(
   '/users/chats/messages',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  createUserChatMessageControllerInstance.handle.bind(
-    createUserChatMessageControllerInstance,
-  ),
+  userAuthMiddlewareInstance.authenticate,
+  createUserChatMessageControllerInstance.handle,
 )
 
 router.post(
   '/users/chats',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  createUserChatControllerInstance.handle.bind(
-    createUserChatControllerInstance,
-  ),
+  userAuthMiddlewareInstance.authenticate,
+  createUserChatControllerInstance.handle,
 )
 
 router.get(
   '/users/chats',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  getUserChatsControllerInstance.handle.bind(getUserChatsControllerInstance),
+  userAuthMiddlewareInstance.authenticate,
+  getUserChatsControllerInstance.handle,
 )
 
 router.get(
   '/users/chats/:chatId',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  getUserChatControllerInstance.handle.bind(getUserChatControllerInstance),
+  userAuthMiddlewareInstance.authenticate,
+  getUserChatControllerInstance.handle,
 )
 
 router.post(
   '/login',
-  userLoginControllerInstance.handle.bind(userLoginControllerInstance),
+  userLoginControllerInstance.handle,
 )
 
 router.post(
   '/animals',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
+  userAuthMiddlewareInstance.authenticate,
   upload.array('pictures', 5), // Middleware do multer para upload de até 5 arquivos
-  createAnimalControllerInstance.handle.bind(createAnimalControllerInstance),
+  createAnimalControllerInstance.handle,
 )
 
 router.patch(
   '/animals/:id',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  updateAnimalStatusControllerInstance.handle.bind(
-    updateAnimalStatusControllerInstance,
-  ),
+  userAuthMiddlewareInstance.authenticate,
+  updateAnimalStatusControllerInstance.handle,
 )
 
 router.get(
   '/animals/available',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  getAvailableAnimalsControllerInstance.handle.bind(
-    getAvailableAnimalsControllerInstance,
-  ),
+  userAuthMiddlewareInstance.authenticate,
+  getAvailableAnimalsControllerInstance.handle,
 )
 
 router.get(
   '/animals/user',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  getUserAnimalsControllerInstance.handle.bind(
-    getUserAnimalsControllerInstance,
-  ),
+  userAuthMiddlewareInstance.authenticate,
+  getUserAnimalsControllerInstance.handle,
 )
 
 export { router }

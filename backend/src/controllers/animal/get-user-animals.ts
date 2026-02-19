@@ -7,7 +7,7 @@ import {
 class GetUserAnimalsController {
   constructor(private readonly getUserAnimals: GetUserAnimalsService) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  handle = async (request: Request, response: Response): Promise<Response> => {
     const { user } = request
 
     try {

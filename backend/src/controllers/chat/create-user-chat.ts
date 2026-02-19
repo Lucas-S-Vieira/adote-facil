@@ -7,7 +7,7 @@ import {
 class CreateUserChatController {
   constructor(private readonly createUserChat: CreateUserChatService) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  handle = async (request: Request, response: Response): Promise<Response> => {
     const { userId } = request.body
     const { user } = request
 

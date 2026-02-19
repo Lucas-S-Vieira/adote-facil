@@ -7,7 +7,7 @@ import {
 class UpdateAnimalStatusController {
   constructor(private readonly updateAnimalStatus: UpdateAnimalStatusService) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  handle = async (request: Request, response: Response): Promise<Response> => {
     const { status } = request.body
     const { id } = request.params
     const { user } = request

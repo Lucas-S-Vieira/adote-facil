@@ -7,7 +7,7 @@ import {
 class GetUserChatsController {
   constructor(private readonly getUserChats: GetUserChatsService) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  handle = async (request: Request, response: Response): Promise<Response> => {
     const { user } = request
 
     try {

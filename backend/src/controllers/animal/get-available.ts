@@ -9,7 +9,7 @@ class GetAvailableAnimalsController {
     private readonly getAvailableAnimals: GetAvailableAnimalsService,
   ) {}
 
-  async handle(request: Request, response: Response): Promise<Response> {
+  handle = async (request: Request, response: Response): Promise<Response> => {
     const { user } = request
     const { gender, type, name } = request.query
 
