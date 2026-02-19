@@ -78,7 +78,9 @@ Prisma --> PostgreSQL
 
 Services --> Providers
 Services --> Utils
-
+```
+### Diagrama de Pacotes
+```mermaid
 flowchart TD
     %% Agrupamento Geral do Sistema
     subgraph Sistema_Adote_Facil [Sistema Adote Fácil]
