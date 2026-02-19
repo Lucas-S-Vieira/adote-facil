@@ -126,6 +126,7 @@ flowchart TB
 
 ### 3.4 Diagrama de Pacotes - Frontend (Estrutura do Código)
 
+
 ```mermaid
 flowchart TB
   subgraph Frontend["Frontend/src"]
@@ -137,7 +138,7 @@ flowchart TB
     STYLES[styles/]
     HELPERS[helpers/]
     LIB[lib/]
-    TYPES[@types/]
+    TYPES["src/@types/"]
   end
 
   APPF --> COMP
