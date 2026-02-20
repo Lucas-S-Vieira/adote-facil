@@ -150,7 +150,7 @@ flowchart TB
 
 Esses diagramas de pacotes demonstram como a estrutura real do repositório está organizada, reforçando a separação de responsabilidades descrita anteriormente.
 
-### 3.5 Diagrama de Componentes por Dom�nio (Backend)
+### 3.5 Diagrama de Componentes por Domínio (Backend)
 
 ```mermaid
 flowchart LR
@@ -162,13 +162,13 @@ flowchart LR
     C3[controllers/chat/*]
   end
 
-  subgraph Dominios["Camada de Servi�os"]
+  subgraph Dominios["Camada de Serviços"]
     S1[services/user/*]
     S2[services/animal/*]
     S3[services/chat/*]
   end
 
-  subgraph Persistencia["Persist�ncia"]
+  subgraph Persistencia["Persistência"]
     URepo[repositories/user.ts]
     ARepo[repositories/animal.ts]
     CRepo[repositories/chat.ts]
