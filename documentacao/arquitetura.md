@@ -25,8 +25,6 @@ A separação explícita entre as pastas `frontend` e `backend` evidencia a ado�
 
 Essa abordagem favorece escalabilidade, separação de responsabilidades e manutenção independente das camadas.
 
----
-
 ### 2.2 Arquitetura em Camadas (Backend)
 
 O backend apresenta uma organização estruturada dentro da pasta `src`, com clara separação de responsabilidades:
@@ -53,22 +51,38 @@ O fluxo típico de execução ocorre da seguinte forma:
 
 Essa organização caracteriza uma **arquitetura em camadas**, com forte separação entre controle, lógica de negócio e persistência.
 
----
-
 ### 2.3 Padrão Repository
 
 A presença da pasta `repositories` indica a aplicação do **Repository Pattern**, cujo objetivo é abstrair o acesso ao banco de dados.
 
 Isso reduz o acoplamento entre regras de negócio e persistência, facilitando testes e futuras mudanças de tecnologia de banco de dados.
 
----
+## 3. Diagramas
 
-## Diagrama de Componentes
+### 3.1 Diagrama de Componentes do Sistema (Visão Geral)
+
+```mermaid
+flowchart LR
+  U[Usuário / Navegador] --> FE[Frontend - Next.js]
+  FE -->|HTTP/JSON| BE[Backend - Node/Express]
+  BE --> DB[(PostgreSQL)]
+
+  subgraph Infraestrutura
+    DC[Docker Compose]
+  end
+
+  DC -.orquestra.-> FE
+  DC -.orquestra.-> BE
+  DC -.orquestra.-> DB
+```
+
+Este diagrama representa a arquitetura cliente-servidor em alto nível, evidenciando a separação entre frontend, backend e banco de dados.
+
+### 3.2 Diagrama de Componentes Internos do Backend (Camadas)
 
 ```mermaid
 graph TD
-
-Frontend --> Routes
+Server --> Routes
 Routes --> Middlewares
 Middlewares --> Controllers
 Controllers --> Services
@@ -79,48 +93,128 @@ Prisma --> PostgreSQL
 Services --> Providers
 Services --> Utils
 ```
-### Diagrama de Pacotes
+
+Este diagrama detalha a organização interna do backend, evidenciando o fluxo de tratamento de requisições e a separação em camadas.
+
+### 3.3 Diagrama de Pacotes - Backend (Estrutura do Código)
+
 ```mermaid
-flowchart TD
-    %% Pacote Frontend simplificado
-    subgraph Frontend [📦 App Frontend / Next.js]
-        direction TB
-        F_Pages[Páginas / App]
-        F_Comp[Componentes]
-        F_API[Integração API]
-        
-        F_Pages --> F_Comp
-        F_Comp --> F_API
-    end
+flowchart TB
+  subgraph Backend["Backend/src"]
+    SERVER[server.ts]
+    APP[app.ts]
+    ROUTES[routes.ts]
+    MIDDLE[middlewares/]
+    CTRL[controllers/]
+    SVC[services/]
+    REPO[repositories/]
+    PROVIDERS[providers/]
+    UTILS[utils/]
+    DB[database.ts]
+  end
 
-    %% Pacote Backend com fluxo linear (estilo que você gostou)
-    subgraph Backend [📦 App Backend / Node.js]
-        direction TB
-        B_Routes[Routes]
-        B_Middlewares[Middlewares]
-        B_Controllers[Controllers]
-        B_Services[Services]
-        B_Repositories[Repositories]
-        
-        B_Routes --> B_Middlewares
-        B_Middlewares --> B_Controllers
-        B_Controllers --> B_Services
-        B_Services --> B_Repositories
-    end
+  SERVER --> APP
+  APP --> ROUTES
+  ROUTES --> MIDDLE
+  ROUTES --> CTRL
+  CTRL --> SVC
+  SVC --> REPO
+  REPO --> DB
+  SVC --> PROVIDERS
+  SVC --> UTILS
+```
 
-    %% Pacote de Infra e Integração
-    subgraph Infra [📦 Infraestrutura e Dados]
-        B_Prisma[Prisma ORM]
-        DB_Postgres[(PostgreSQL)]
-        
-        B_Repositories --> B_Prisma
-        B_Prisma --> DB_Postgres
-    end
+### 3.4 Diagrama de Pacotes - Frontend (Estrutura do Código)
 
-    %% Ponte entre as aplicações
-    F_API ===>|Requisição HTTP| B_Routes
+```mermaid
+flowchart TB
+  subgraph Frontend["Frontend/src"]
+    APPF[app/]
+    API[api/]
+    COMP[components/]
+    CTX[contexts/]
+    PROVIDERSF[providers/]
+    STYLES[styles/]
+    HELPERS[helpers/]
+    LIB[lib/]
+    TYPES["src/@types/"]
+  end
 
-    %% Estilos limpos
-    style Frontend fill:#f8fafc,stroke:#0369a1,stroke-width:2px
-    style Backend fill:#f0fdf4,stroke:#15803d,stroke-width:2px
-    style Infra fill:#fefce8,stroke:#a16207,stroke-width:2px
+  APPF --> COMP
+  APPF --> API
+  APPF --> CTX
+  APPF --> PROVIDERSF
+  COMP --> STYLES
+  API --> LIB
+```
+
+Esses diagramas de pacotes demonstram como a estrutura real do repositório está organizada, reforçando a separação de responsabilidades descrita anteriormente.
+
+### 3.5 Diagrama de Componentes por Domínio (Backend)
+
+```mermaid
+flowchart LR
+  subgraph API["Camada HTTP"]
+    R[routes.ts]
+    M[middlewares/user-auth.ts]
+    C1[controllers/user/*]
+    C2[controllers/animal/*]
+    C3[controllers/chat/*]
+  end
+
+  subgraph Dominios["Camada de Serviços"]
+    S1[services/user/*]
+    S2[services/animal/*]
+    S3[services/chat/*]
+  end
+
+  subgraph Persistencia["Persistência"]
+    URepo[repositories/user.ts]
+    ARepo[repositories/animal.ts]
+    CRepo[repositories/chat.ts]
+    MRepo[repositories/user-message.ts]
+    IRepo[repositories/animal-image.ts]
+    Prisma[Prisma ORM]
+    PG[(PostgreSQL)]
+  end
+
+  subgraph Suporte["Componentes Transversais"]
+    Providers[providers/*]
+    Utils[utils/*]
+    DBConfig[database.ts]
+  end
+
+  R --> M
+  M --> C1
+  M --> C2
+  M --> C3
+
+  C1 --> S1
+  C2 --> S2
+  C3 --> S3
+
+  S1 --> URepo
+  S2 --> ARepo
+  S2 --> IRepo
+  S3 --> CRepo
+  S3 --> MRepo
+
+  S1 --> Providers
+  S2 --> Providers
+  S3 --> Providers
+  S1 --> Utils
+  S2 --> Utils
+  S3 --> Utils
+
+  URepo --> Prisma
+  ARepo --> Prisma
+  CRepo --> Prisma
+  MRepo --> Prisma
+  IRepo --> Prisma
+  Prisma --> DBConfig
+  DBConfig --> PG
+```
+
+Este diagrama complementa a visão por camadas com a visão por dominio (usuário, animal e chat), conectando os componentes reais existentes em `backend/src`. 
+
+A combinação dos diagramas de componentes e pacotes permite visualizar tanto a organização lógica do sistema quanto sua estrutura física no repositório.
