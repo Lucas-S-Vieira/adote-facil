@@ -17,77 +17,67 @@ const router = Router()
 
 router.post(
   '/users',
-  createUserControllerInstance.handle.bind(createUserControllerInstance),
+  (req, res) => createUserControllerInstance.handle(req, res),
 )
 
 router.patch(
   '/users',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  updateUserControllerInstance.handle.bind(updateUserControllerInstance),
+  (req, res, next) => userAuthMiddlewareInstance.authenticate(req, res, next),
+  (req, res) => updateUserControllerInstance.handle(req, res),
 )
 
 router.post(
   '/users/chats/messages',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  createUserChatMessageControllerInstance.handle.bind(
-    createUserChatMessageControllerInstance,
-  ),
+  (req, res, next) => userAuthMiddlewareInstance.authenticate(req, res, next),
+  (req, res) => createUserChatMessageControllerInstance.handle(req, res),
 )
 
 router.post(
   '/users/chats',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  createUserChatControllerInstance.handle.bind(
-    createUserChatControllerInstance,
-  ),
+  (req, res, next) => userAuthMiddlewareInstance.authenticate(req, res, next),
+  (req, res) => createUserChatControllerInstance.handle(req, res),
 )
 
 router.get(
   '/users/chats',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  getUserChatsControllerInstance.handle.bind(getUserChatsControllerInstance),
+  (req, res, next) => userAuthMiddlewareInstance.authenticate(req, res, next),
+  (req, res) => getUserChatsControllerInstance.handle(req, res),
 )
 
 router.get(
   '/users/chats/:chatId',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  getUserChatControllerInstance.handle.bind(getUserChatControllerInstance),
+  (req, res, next) => userAuthMiddlewareInstance.authenticate(req, res, next),
+  (req, res) => getUserChatControllerInstance.handle(req, res),
 )
 
 router.post(
   '/login',
-  userLoginControllerInstance.handle.bind(userLoginControllerInstance),
+  (req, res) => userLoginControllerInstance.handle(req, res),
 )
 
 router.post(
   '/animals',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
+  (req, res, next) => userAuthMiddlewareInstance.authenticate(req, res, next),
   upload.array('pictures', 5), // Middleware do multer para upload de até 5 arquivos
-  createAnimalControllerInstance.handle.bind(createAnimalControllerInstance),
+  (req, res) => createAnimalControllerInstance.handle(req, res),
 )
 
 router.patch(
   '/animals/:id',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  updateAnimalStatusControllerInstance.handle.bind(
-    updateAnimalStatusControllerInstance,
-  ),
+  (req, res, next) => userAuthMiddlewareInstance.authenticate(req, res, next),
+  (req, res) => updateAnimalStatusControllerInstance.handle(req, res),
 )
 
 router.get(
   '/animals/available',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  getAvailableAnimalsControllerInstance.handle.bind(
-    getAvailableAnimalsControllerInstance,
-  ),
+  (req, res, next) => userAuthMiddlewareInstance.authenticate(req, res, next),
+  (req, res) => getAvailableAnimalsControllerInstance.handle(req, res),
 )
 
 router.get(
   '/animals/user',
-  userAuthMiddlewareInstance.authenticate.bind(userAuthMiddlewareInstance),
-  getUserAnimalsControllerInstance.handle.bind(
-    getUserAnimalsControllerInstance,
-  ),
+  (req, res, next) => userAuthMiddlewareInstance.authenticate(req, res, next),
+  (req, res) => getUserAnimalsControllerInstance.handle(req, res),
 )
 
 export { router }
