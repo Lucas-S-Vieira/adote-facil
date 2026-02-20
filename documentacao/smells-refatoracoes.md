@@ -7,9 +7,11 @@ No arquivo `routes.ts`, observa-se repetição frequente do padrão:
 ```ts
 createAnimalControllerInstance.handle.bind(createAnimalControllerInstance)
 
+```
+
 Esse padrão aparece em diversas rotas.
 
-Problema identificado 
+Problema identificado
 
 Repetição de código.
 
@@ -23,25 +25,28 @@ Uma alternativa é utilizar arrow functions ou garantir que o método já esteja
 
 Exemplo de refatoração:
 
+```ts
 router.post('/animals', (req, res) =>
   createAnimalControllerInstance.handle(req, res)
 )
 
-Essa abordagem elimina a necessidade do uso repetitivo de .bind(), tornando o código mais limpo.
+```
+
+Essa abordagem elimina a necessidade do uso repetitivo de `.bind()`, tornando o código mais limpo.
 
 ## 2. Code Smell: Método com múltiplas responsabilidades
 
 No arquivo `create-animal.ts`, o método `handle` executa diversas responsabilidades:
 
-- Extração de dados da requisição
-- Transformação de arquivos (map de buffers)
-- Chamada da regra de negócio
-- Definição de status HTTP
-- Tratamento de erro
+* Extração de dados da requisição
+* Transformação de arquivos (map de buffers)
+* Chamada da regra de negócio
+* Definição de status HTTP
+* Tratamento de erro
 
 Trecho original:
 
-```ts`
+```ts
 async handle(request: Request, response: Response): Promise<Response> {
   const { name, type, gender, race, description } = request.body
   const { user } = request
@@ -70,6 +75,8 @@ async handle(request: Request, response: Response): Promise<Response> {
   }
 }
 
+```
+
 Problema identificado:
 
 O método está acumulando múltiplas responsabilidades, o que pode dificultar manutenção e testes.
@@ -78,15 +85,19 @@ Refatoração sugerida:
 
 Extrair a lógica de transformação de imagens para um método auxiliar:
 
-```ts`
+```ts
 private extractPictureBuffers(files: Express.Multer.File[]) {
   return files.map((file) => file.buffer)
 }
 
+```
+
 E utilizar no método principal:
 
-```ts`
+```ts
 const pictureBuffers = this.extractPictureBuffers(pictures)
+
+```
 
 Essa separação melhora legibilidade e mantém o princípio da responsabilidade única.
 
@@ -94,8 +105,10 @@ Essa separação melhora legibilidade e mantém o princípio da responsabilidade
 
 Trecho original identificado no controller:
 
-```ts`
+```ts
 userId: user?.id || '',
+
+```
 
 Problema identificado:
 
@@ -115,12 +128,16 @@ Refatoração sugerida:
 
 Realizar validação explícita antes de chamar o service:
 
+```ts
 if (!user?.id) {
   return response.status(401).json({ error: 'User not authenticated' })
 }
 
+```
+
 E então passar o ID de forma segura:
 
+```ts
 const result = await this.createAnimal.execute({
   name,
   type,
@@ -131,5 +148,6 @@ const result = await this.createAnimal.execute({
   pictures: pictureBuffers,
 })
 
-Essa abordagem torna o fluxo mais seguro, explícito e evita persistência de dados inválidos.
+```
 
+Essa abordagem torna o fluxo mais seguro, explícito e evita persistência de dados inválidos.

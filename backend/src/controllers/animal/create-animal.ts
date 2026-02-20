@@ -11,9 +11,12 @@ class CreateAnimalController {
     const { name, type, gender, race, description } = request.body
     const { user } = request
     const pictures = request.files as Express.Multer.File[]
+    if (!user?.id) {
+      return response.status(401).json({ error: 'User not authenticated' })
+    }
 
     try {
-      const pictureBuffers = pictures.map((file) => file.buffer)
+      const pictureBuffers = this.extractPictureBuffers(pictures)
 
       const result = await this.createAnimal.execute({
         name,
@@ -33,6 +36,9 @@ class CreateAnimalController {
       console.error('Error creating animal:', error)
       return response.status(500).json({ error: error.message })
     }
+  }
+  private extractPictureBuffers(files: Express.Multer.File[]) {
+    return files.map((file) => file.buffer)
   }
 }
 
