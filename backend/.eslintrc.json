@@ -1,7 +1,0 @@
-{
-  "extends": "@rocketseat/eslint-config/node",
-  "rules": {
-    "@typescript-eslint/no-namespace": "off",
-    "no-useless-constructor": "off"
-  }
-}
