@@ -20,7 +20,7 @@ jobs:
       - name: Instalar dependências do backend
         run: |
           cd backend              # Acessa a pasta do backend
-          npm install             # Instala as dependências do Node.js
+          npm ci            # Instala as dependências do Node.js
 
       - name: Executar testes unitários com Jest
         run: |
@@ -74,7 +74,6 @@ jobs:
           echo "POSTGRES_CONTAINER_PORT=${{ env.POSTGRES_CONTAINER_PORT }}" >> .env
 
       - name: Subir containers com Docker Compose
-        working-directory: ./backend
         run: |
           docker compose up -d     # Sobe os containers em segundo plano
           sleep 10                 # Aguarda alguns segundos para garantir que os serviços subam
